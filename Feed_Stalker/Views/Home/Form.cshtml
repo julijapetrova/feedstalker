@@ -1,0 +1,17 @@
+﻿
+@using System.ServiceModel.Syndication;
+@model SyndicationFeed
+
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+
+        <legend>Feed</legend>
+        @Html.LabelFor(model=>model.BaseUri)
+        @Html.TextBoxFor(model=>model.BaseUri)
+
+        <input type="submit" value="Register"/>
+    </fieldset>
+
+}
