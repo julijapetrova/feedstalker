@@ -9,8 +9,10 @@ namespace Feed_Stalker
 {
     public class WebHookController : ApiController
     {
+
+        List<string> webhookPosts = new List<string>();
+        
         // GET api/<controller>
-       
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -25,6 +27,7 @@ namespace Feed_Stalker
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
+            webhookPosts.Add(value);
         }
 
         // PUT api/<controller>/5
@@ -35,6 +38,11 @@ namespace Feed_Stalker
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
+        }
+
+        public List<string> getWebHooks()
+        {
+            return webhookPosts;
         }
     }
 }

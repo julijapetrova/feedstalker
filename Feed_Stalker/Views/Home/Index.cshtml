@@ -3,7 +3,7 @@
     Layout = null;
 }
 @using System.ServiceModel.Syndication;
-@model SyndicationFeed
+@model List<string>
 <!DOCTYPE html>
 
 <html>
@@ -26,7 +26,17 @@
                 As a user I do not want to care about the webhook on Feed Stalker. If the feed is not updated in more that 1 month, then the webhook gets deleted and a DELETE operation is triggered on the webhook URL in order to notify the system subscribed to the feed.
             </li>
         </ul>
-        @Html.Partial("Form")
+
+
+       @foreach (var item in Model)
+       {
+           <p style="border :1px solid black">@item</p>
+       }
+
+
+
+
+        @*@Html.Partial("Form")
 
 
         <h3>@Model.Title.Text</h3>
@@ -45,7 +55,7 @@
                     </div>
                 </div>
             }
-        </div>
+        </div>*@
 
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

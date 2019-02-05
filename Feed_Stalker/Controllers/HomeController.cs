@@ -10,16 +10,19 @@ namespace Feed_Stalker.Controllers
 {
     public class HomeController : Controller
     {
-            AtomFeedService atomFeedService = new AtomFeedService();
+        AtomFeedService atomFeedService = new AtomFeedService();
 
         // GET: Home
         public ActionResult Index()
         {
-           
+            WebHookController webHookController = new WebHookController();
+            ViewBag.Posts = webHookController.getWebHooks();
+            //model: webHookController.getWebHooks()
+
             ViewBag.Feed = atomFeedService.GetFeed();
+            //model: atomFeedService.GetFeed()
 
-
-            return View(model: atomFeedService.GetFeed());
+            return View(model: webHookController.getWebHooks());
         }
 
         [HttpPost]
