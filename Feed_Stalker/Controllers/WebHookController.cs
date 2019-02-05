@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Feed_Stalker.ViewModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,9 +29,19 @@ namespace Feed_Stalker
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public  void Post(HttpRequestMessage request)
         {
-            webhookPosts.Add(value);
+            string jsonContent =  request.Content.ReadAsStringAsync().Result;
+
+            //jsonContent = jsonContent.Substring(2, jsonContent.Length-3);
+            //GithubPostViewModel dataSet = JsonConvert.DeserializeObject<GithubPostViewModel>(jsonContent);
+            //GithubPostViewModel post = new GithubPostViewModel();
+            //post.author =;
+            //post.githubEvent=;
+            //post.message=;
+            //post.timestamp =;
+
+            webhookPosts.Add(jsonContent);
         }
 
         // PUT api/<controller>/5

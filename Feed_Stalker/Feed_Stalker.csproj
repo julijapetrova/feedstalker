@@ -118,6 +118,7 @@
     <Compile Include="Services\FeedReaderService.cs" />
     <Compile Include="Services\WebhookService.cs" />
     <Compile Include="Controllers\WebHookController.cs" />
+    <Compile Include="ViewModels\GithubPostViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
