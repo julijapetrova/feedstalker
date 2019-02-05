@@ -11,7 +11,7 @@ using System.Xml;
 namespace Feed_Stalker.Services
 {
 
-    public class AtomFeedService : FeedReaderService
+    public class AtomFeedService : FeedReaderService 
     {
         
         private List<SyndicationFeed> syndicationFeeds = new List<SyndicationFeed>();
