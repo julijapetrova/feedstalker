@@ -26,6 +26,18 @@
                 As a user I do not want to care about the webhook on Feed Stalker. If the feed is not updated in more that 1 month, then the webhook gets deleted and a DELETE operation is triggered on the webhook URL in order to notify the system subscribed to the feed.
             </li>
         </ul>
+        @if (ViewBag.stringarray.Count != 0)
+        {
+            <h1>Database says hi:</h1>
+            <ul>
+                @foreach (string thingie in @ViewBag.stringarray)
+                {
+                    <li>@thingie</li>
+                }
+            </ul>
+        }
+
+
 
         @if (!String.IsNullOrEmpty(TempData["SecretKey"] as string))
         {

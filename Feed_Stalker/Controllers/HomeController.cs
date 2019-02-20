@@ -16,7 +16,9 @@ namespace Feed_Stalker.Controllers
         public ActionResult Index()
         {
             DBConnectionService db = new DBConnectionService();
-            db.Test();
+            List<string> s = db.getAllFromDB();
+            ViewBag.stringarray = s;
+            
             return View();
         }
         [HttpPost]

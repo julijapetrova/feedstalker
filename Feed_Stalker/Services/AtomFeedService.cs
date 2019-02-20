@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 
@@ -9,6 +10,7 @@ namespace Feed_Stalker.Services
     {
 
         private Dictionary<string, SyndicationFeed> syndicationFeeds = new Dictionary<string, SyndicationFeed>();
+        DBConnectionService db = new DBConnectionService();
 
 
         public SyndicationFeed GetFeed(string secretkey)
@@ -31,8 +33,11 @@ namespace Feed_Stalker.Services
 
             string secretKey = Guid.NewGuid().ToString();
 
-            syndicationFeeds.Add(secretKey, feed);
+            //syndicationFeeds.Add(secretKey, feed);
 
+            string serializedFeed = JsonConvert.SerializeObject(feed);
+
+            db.saveFeed(secretKey, serializedFeed);
             return secretKey;
         }
 
@@ -52,7 +57,7 @@ namespace Feed_Stalker.Services
             }
         }
 
-        
+
     }
 
 }
