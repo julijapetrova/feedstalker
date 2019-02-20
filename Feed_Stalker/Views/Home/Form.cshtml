@@ -1,17 +1,39 @@
 ﻿
-@using System.ServiceModel.Syndication;
-@model SyndicationFeed
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateAtomFeed", "Home", FormMethod.Post))
 {
     <fieldset>
 
         <legend>Feed</legend>
-        @Html.LabelFor(model=>model.BaseUri)
-        @Html.TextBoxFor(model=>model.BaseUri)
 
-        <input type="submit" value="Register"/>
+        <label for="Description">Description</label>
+        <input name="Description" />
+
+        <label for="BaseUri">BaseUri</label>
+        <input name="BaseUri" />
+
+        <label for="Title">Title</label>
+        <input name="Title" />
+
+        <input type="submit" value="Register" />
     </fieldset>
 
-} 
+}
+
+
+@*@using (Html.BeginForm("Index", "LiveGame", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-xs-8 col-sm-4">
+                <input type="file" name="inGameFile" id="inGameFile" value="Choose File" />
+            </div>
+            <div class="col-xs-8 col-sm-4">
+                <button type="submit" class="btn" name="action:UploadGame" aria-label="Left Align" value="Upload Game">
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>Upload
+                </button>
+            </div>
+            <p><a class="btn btn-info" target="_blank" href="https://gamescore22.azurewebsites.net/">Get games from here &raquo;</a></p>
+            <br><br>
+            <h3>@Html.Raw(ViewBag.Message)</h3>
+        </div>
+    }*@

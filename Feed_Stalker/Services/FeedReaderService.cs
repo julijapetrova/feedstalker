@@ -19,6 +19,6 @@ namespace Feed_Stalker.Services
 
         [OperationContract]
         [WebGet]
-        SyndicationFeed GetFeed();
+        SyndicationFeed GetFeed(string secretkey);
     }
 }

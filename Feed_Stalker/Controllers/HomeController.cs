@@ -10,22 +10,25 @@ namespace Feed_Stalker.Controllers
 {
     public class HomeController : Controller
     {
-            AtomFeedService atomFeedService = new AtomFeedService();
+        AtomFeedService atomFeedService = new AtomFeedService();
 
         // GET: Home
         public ActionResult Index()
         {
-           
-            ViewBag.Feed = atomFeedService.GetFeed();
-
-
-            return View(model: atomFeedService.GetFeed());
+            DBConnectionService db = new DBConnectionService();
+            db.Test();
+            return View();
         }
-
         [HttpPost]
-        public void RegisterNewFeed(string url)
+        public ActionResult CreateAtomFeed()
         {
-            atomFeedService.RegisterFeed(url);
+            string title = Request.Form["Title"];
+            string uri = Request.Form["BaseUri"];
+            string description = Request.Form["Description"];
+
+            string secretKey = atomFeedService.createAtomFeed(title, description, uri);
+            TempData["SecretKey"] = secretKey;
+            return RedirectToAction("Index"); 
         }
     }
 }

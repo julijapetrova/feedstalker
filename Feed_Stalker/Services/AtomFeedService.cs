@@ -1,41 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
 using System.ServiceModel.Syndication;
-using System.ServiceModel.Web;
-using System.Web;
-using System.Web.Mvc;
-using System.Xml;
 
 namespace Feed_Stalker.Services
 {
 
-    public class AtomFeedService : FeedReaderService 
+    public class AtomFeedService : FeedReaderService
     {
+
+        private Dictionary<string, SyndicationFeed> syndicationFeeds = new Dictionary<string, SyndicationFeed>();
+
+
+        public SyndicationFeed GetFeed(string secretkey)
+        {
+
+            if (syndicationFeeds.ContainsKey(secretkey))
+            {
+                return syndicationFeeds[secretkey];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        public string createAtomFeed(string title, string description, string uri)
+        {
+            SyndicationFeed feed = new SyndicationFeed(title, description, new Uri(uri));
+
+            string secretKey = Guid.NewGuid().ToString();
+
+            syndicationFeeds.Add(secretKey, feed);
+
+            return secretKey;
+        }
+
+        public void editAtomFeedUri(string secretkey, string newUri)
+        {
+            if (syndicationFeeds.ContainsKey(secretkey))
+            {
+                syndicationFeeds[secretkey].BaseUri = new Uri(newUri);
+            }
+        }
+
+        public void RemoveFeed(string secretkey)
+        {
+            if (syndicationFeeds.ContainsKey(secretkey))
+            {
+                syndicationFeeds.Remove(secretkey);
+            }
+        }
+
         
-        private List<SyndicationFeed> syndicationFeeds = new List<SyndicationFeed>();
-
-       
-        public void RegisterFeed(string url)
-        {
-            XmlReader reader = XmlReader.Create("https://news.google.com/atom");
-            syndicationFeeds.Add(SyndicationFeed.Load(reader));
-        }
-
-        public SyndicationFeed GetFeed()
-        {
-            XmlReader reader = XmlReader.Create("https://news.google.com/atom");
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
-            return feed;
-        }
-
-        public void RemoveFeed(SyndicationFeed feed)
-        {
-            syndicationFeeds.Remove(feed);
-        }
-
-
     }
 
 }

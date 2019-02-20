@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Feed_Stalker.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,8 @@ namespace Feed_Stalker
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post(HttpRequestMessage request)
+        [HttpPost]
+        public HttpResponseMessage Post(RootObject rootObject)
         {
 
 
