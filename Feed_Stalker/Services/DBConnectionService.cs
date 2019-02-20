@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http;
+using System.ServiceModel.Syndication;
 using System.Web;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 
 namespace Feed_Stalker.Services
 {
@@ -22,62 +24,98 @@ namespace Feed_Stalker.Services
             conn_string.Database = "julijapetrova_dk_db";
             conn_string.Port = 3306;
             conn_string.PersistSecurityInfo = true;
-            using (MySqlConnection conn = new MySqlConnection(conn_string.ToString()))
-
-                try
-                {
-                    conn.Open();
-                    return conn;
-                }
-                catch (MySqlException ex)
-                {
-                    throw ex;
-                }
+            MySqlConnection conn = new MySqlConnection(conn_string.ToString());
+            try
+            {
+                conn.Open();
+                return conn;
+            }
+            catch (MySqlException ex)
+            {
+                throw ex;
+            }
 
 
         }
-        public List<string> getAllFromDB()
+        public Dictionary<string, SyndicationFeed> getAllFromDB()
         {
             MySqlConnection conn = Connect();
             using (MySqlCommand cmd = conn.CreateCommand())
-            {    //watch out for this SQL injection vulnerability below
-
-
-
-                cmd.CommandText = string.Format("SELECT * FROM FirstTable");
+            {
+                cmd.CommandText = string.Format("SELECT * FROM Feed");
                 cmd.ExecuteNonQuery();
+
                 MySqlDataReader mySqlDataReader = cmd.ExecuteReader();
-                List<string> stringArray = new List<string>();
+                Dictionary<string, SyndicationFeed> stringArray = new Dictionary<string, SyndicationFeed>();
                 while (mySqlDataReader.Read())
                 {
-                    stringArray.Add($"{mySqlDataReader.GetInt16(0)}-{mySqlDataReader.GetInt16(1)}");
-
-
+                    stringArray[mySqlDataReader.GetString(0)] = JsonConvert.DeserializeObject<SyndicationFeed>(mySqlDataReader.GetString(1));
                 }
+                conn.Close();
                 return stringArray;
             }
         }
 
-        public HttpResponseMessage saveFeed(string item1, string item2)
+        public HttpResponseMessage saveFeed(string secretkey, string syndicationfeed)
         {
             MySqlConnection conn = Connect();
             using (MySqlCommand cmd = conn.CreateCommand())
-            {    //watch out for this SQL injection vulnerability below
-
-
-
-                cmd.CommandText = string.Format($"INSERT INTO Feed(secret_key,syndication_feed) VALUES({item1},{item2})");
+            {
+                cmd.CommandText = $"INSERT INTO Feed(secret_key,syndication_feed) VALUES(@secret_key, @syndication_feed)";
                 try
                 {
+                    cmd.Parameters.AddWithValue("@secret_key", secretkey);
+                    cmd.Parameters.AddWithValue("@syndication_feed", syndicationfeed);
+
                     cmd.ExecuteNonQuery();
+                    conn.Close();
                     return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
                 }
                 catch (MySqlException ex)
                 {
+                    conn.Close();
                     throw ex;
                 }
-
             }
         }
+        public SyndicationFeed GetFeed(string secretkey)
+        {
+            MySqlConnection conn = Connect();
+            using (MySqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = string.Format("SELECT * FROM Feed WHERE secret_key='@secret_key'");
+                try
+                {
+                    cmd.Parameters.AddWithValue("@secret_key", secretkey);
+                    cmd.ExecuteNonQuery();
+                    string result = null;
+                    MySqlDataReader mySqlDataReader = cmd.ExecuteReader();
+
+
+                    while (mySqlDataReader.Read())
+                    {
+                        result = (string)mySqlDataReader[1];
+                        Console.WriteLine(mySqlDataReader[0].ToString(), mySqlDataReader[1]);
+                    }
+                    conn.Close();
+
+                    SyndicationFeed synfeed = new SyndicationFeed();
+                    synfeed.Title = new TextSyndicationContent("Heyheyheyhey");
+                    //JsonConvert.DeserializeObject<SyndicationFeed>(result);
+
+                    return synfeed;
+
+
+
+                }
+                catch (MySqlException ex)
+                {
+                    conn.Close();
+                    throw ex;
+                }
+            }
+
+        }
+
     }
 }

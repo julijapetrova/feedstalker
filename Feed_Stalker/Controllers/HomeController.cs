@@ -15,10 +15,10 @@ namespace Feed_Stalker.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            DBConnectionService db = new DBConnectionService();
-            List<string> s = db.getAllFromDB();
-            ViewBag.stringarray = s;
-            
+            //DBConnectionService db = new DBConnectionService();
+            //Dictionary<string, SyndicationFeed> feeds = db.getAllFromDB();
+
+
             return View();
         }
         [HttpPost]
@@ -30,7 +30,19 @@ namespace Feed_Stalker.Controllers
 
             string secretKey = atomFeedService.createAtomFeed(title, description, uri);
             TempData["SecretKey"] = secretKey;
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult Feeds()
+        {
+            string secretKeyInput = Request.Form["secret_key_input"];
+            
+            DBConnectionService db = new DBConnectionService();
+            SyndicationFeed feed = db.GetFeed(secretKeyInput);
+
+            TempData["SecretKey"] = secretKeyInput;
+
+            return View(model: feed);
         }
     }
 }

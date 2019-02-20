@@ -6,7 +6,7 @@ using System.ServiceModel.Syndication;
 namespace Feed_Stalker.Services
 {
 
-    public class AtomFeedService : FeedReaderService
+    public class AtomFeedService 
     {
 
         private Dictionary<string, SyndicationFeed> syndicationFeeds = new Dictionary<string, SyndicationFeed>();
@@ -16,9 +16,9 @@ namespace Feed_Stalker.Services
         public SyndicationFeed GetFeed(string secretkey)
         {
 
-            if (syndicationFeeds.ContainsKey(secretkey))
+            if (db.GetFeed(secretkey) != null)
             {
-                return syndicationFeeds[secretkey];
+                return db.GetFeed(secretkey);
             }
             else
             {

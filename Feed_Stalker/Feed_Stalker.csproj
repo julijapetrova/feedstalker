@@ -128,7 +128,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AtomFeedService.cs" />
     <Compile Include="Services\DBConnectionService.cs" />
-    <Compile Include="Services\FeedReaderService.cs" />
     <Compile Include="Services\WebhookService.cs" />
     <Compile Include="Controllers\WebHookController.cs" />
     <Compile Include="ViewModels\GithubPostViewModel.cs" />
@@ -139,6 +138,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Form.cshtml" />
     <None Include="Properties\PublishProfiles\UnoEuro public html.pubxml" />
+    <Content Include="Views\Home\Feeds.cshtml" />
+    <Content Include="Views\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
